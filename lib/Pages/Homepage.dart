@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:translator/constants/constants.dart';
+import 'package:translator/service/service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,6 +14,7 @@ class _HomePageState extends State<HomePage> {
   final _formkey = GlobalKey<FormState>();
   String dropdefaultvalue1 = "English";
   String dropdefaultvalue2 = "Gujarati";
+  late Future<String> output;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -157,6 +159,11 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                     _translatestring.text = '';
+                  } else {
+                    output = translate(_translatestring.text, dropdefaultvalue1,
+                        dropdefaultvalue2);
+                    print("------------------------");
+                    print(output);
                   }
                 },
                 child: Container(
@@ -208,13 +215,26 @@ class _HomePageState extends State<HomePage> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.white),
-                      child: const Padding(
+                      child: Padding(
                         padding: EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           scrollDirection: Axis.vertical,
-                          child: Text(
-                            'Hi, Translated Text',
-                            style: TextStyle(fontSize: 24, color: Colors.black),
+                          //   child: translate(_translatestring.text, dropdefaultvalue1,
+                          // dropdefaultvalue2);,
+                          child: FutureBuilder<String>(
+                            future: translate(_translatestring.text,
+                                dropdefaultvalue1, dropdefaultvalue2),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                print(snapshot);
+                                return Text(
+                                  snapshot.data.toString(),
+                                  style: TextStyle(
+                                      fontSize: 24, color: Colors.black),
+                                );
+                              }
+                              return Text("");
+                            },
                           ),
                         ),
                       ),
