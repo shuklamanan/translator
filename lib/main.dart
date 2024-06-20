@@ -8,8 +8,10 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomePage(),
+    return MaterialApp(
+      home: const HomePage(),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark(),
     );
   }
 }
