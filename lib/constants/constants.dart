@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 List<String> language = [
   "Afrikaans",
   "Albanian",
@@ -131,4 +133,11 @@ List<String> language = [
   "Yoruba",
   "Yucatec Maya",
   "Zulu"
+];
+
+List<Color> gradientcolor = [
+  Colors.purple,
+  Colors.blue,
+  Colors.lightBlue,
+  Colors.orange,
 ];
