@@ -10,6 +10,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _translatestring = TextEditingController();
+  final _formkey = GlobalKey<FormState>();
   String dropdefaultvalue1 = "English";
   String dropdefaultvalue2 = "Gujarati";
   @override
@@ -35,17 +36,26 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   Container(
                     width: 310,
-                    child: TextField(
-                      controller: _translatestring,
-                      decoration: InputDecoration(
-                        label: const Text(
-                          'E N T E R    T E X T',
-                          style: TextStyle(fontWeight: FontWeight.w400),
+                    child: Form(
+                      key: _formkey,
+                      child: TextFormField(
+                        controller: _translatestring,
+                        decoration: InputDecoration(
+                          label: const Text(
+                            'E N T E R    T E X T',
+                            style: TextStyle(fontWeight: FontWeight.w400),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: const BorderSide(),
+                          ),
                         ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide: const BorderSide(),
-                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please Fill';
+                          }
+                          return null;
+                        },
                       ),
                     ),
                   ),
@@ -127,7 +137,28 @@ class _HomePageState extends State<HomePage> {
                 height: 20,
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  if (_translatestring.text.trim() == '' ||
+                      !_formkey.currentState!.validate()) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: const Color.fromARGB(255, 1, 175, 244),
+                        shape: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: const BorderSide(
+                            color: Colors.transparent,
+                          ),
+                        ),
+                        elevation: 20,
+                        content: const Text(
+                          'Please enter valid Texts',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    );
+                    _translatestring.text = '';
+                  }
+                },
                 child: Container(
                   height: 60,
                   width: 200,
