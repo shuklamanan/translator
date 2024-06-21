@@ -9,8 +9,8 @@ String url = "https://api.translateplus.io/v1/translate";
 
 Future<String> translate(
     String inputstring, String translatefrom, String translateto) async {
-  final obj = json.encode({
-    "text": translatefrom.trim(),
+  final obj = jsonEncode({
+    "text": inputstring.trim(),
     "source": map[translatefrom],
     "target": map[translateto]
   });
@@ -21,16 +21,14 @@ Future<String> translate(
     final response = await http.post(
       Uri.parse(url),
       headers: {
-        "content-type": "application/json;charset=utf-8",
+        "content-type": "application/json",
         "x-api-key": api,
       },
       body: obj,
+      encoding: utf8,
     );
-    print(response.body);
-    Map result = jsonDecode(response.body);
-    print('hello');
-    print("******");
-    print(result);
+    Map result = jsonDecode(utf8.decode(response.bodyBytes));
+    print(result["translations"]);
     return result["translations"]["translation"];
   } catch (e) {
     print(e.toString());

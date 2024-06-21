@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:translator/constants/constants.dart';
 import 'package:translator/service/service.dart';
 
@@ -221,15 +222,12 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           scrollDirection: Axis.vertical,
-                          //   child: translate(_translatestring.text, dropdefaultvalue1,
-                          // dropdefaultvalue2);,
                           child: FutureBuilder<String>(
                             future: translate(_translatestring.text,
                                 dropdefaultvalue1, dropdefaultvalue2),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 temp = snapshot.data.toString();
-                                // output = snapshot.data.toString();
                                 print(snapshot);
                                 return Text(
                                   snapshot.data.toString(),
@@ -275,7 +273,12 @@ class _HomePageState extends State<HomePage> {
                     left: 205,
                     bottom: 5,
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        print(temp);
+                        if (temp.trim().isNotEmpty) {
+                          Share.share('hi');
+                        }
+                      },
                       child: Container(
                         width: 50,
                         height: 50,
