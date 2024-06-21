@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:translator/constants/constants.dart';
 import 'package:translator/service/service.dart';
 
@@ -15,6 +16,7 @@ class _HomePageState extends State<HomePage> {
   String dropdefaultvalue1 = "English";
   String dropdefaultvalue2 = "Gujarati";
   late Future<String> output;
+  String temp = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -216,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.white),
                       child: Padding(
-                        padding: EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: SingleChildScrollView(
                           scrollDirection: Axis.vertical,
                           //   child: translate(_translatestring.text, dropdefaultvalue1,
@@ -226,14 +228,16 @@ class _HomePageState extends State<HomePage> {
                                 dropdefaultvalue1, dropdefaultvalue2),
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
+                                temp = snapshot.data.toString();
+                                // output = snapshot.data.toString();
                                 print(snapshot);
                                 return Text(
                                   snapshot.data.toString(),
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 24, color: Colors.black),
                                 );
                               }
-                              return Text("");
+                              return const Text("hi");
                             },
                           ),
                         ),
@@ -244,7 +248,13 @@ class _HomePageState extends State<HomePage> {
                     left: 85,
                     bottom: 5,
                     child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        if (temp.trim().isNotEmpty) {
+                          print("copied");
+                          Clipboard.setData(
+                              new ClipboardData(text: temp.trim()));
+                        }
+                      },
                       child: Container(
                         width: 50,
                         height: 50,
