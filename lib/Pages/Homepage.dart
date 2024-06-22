@@ -120,9 +120,12 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   children: [
                     Expanded(
-                      child: Text(
-                        _speechtotext.isListening ? "Listening" : wordspoken,
-                        style: const TextStyle(fontSize: 20),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20.0, right: 10),
+                        child: Text(
+                          _speechtotext.isListening ? "Listening" : wordspoken,
+                          style: const TextStyle(fontSize: 20),
+                        ),
                       ),
                     ),
                   ],
