@@ -110,7 +110,8 @@ List<String> language = [
   "Xhosa",
   "Yiddish",
   "Yoruba",
-  "Zulu"
+  "Zulu",
+  "None"
 ];
 
 Map<String, String> map = {
