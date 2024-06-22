@@ -16,3 +16,9 @@ Introducing Translator, the ultimate translator app that effortlessly bridges la
 - Direct Sharing: Share your translations instantly through various platforms directly from the app, simplifying communication on the go.
 
 - Experience the power of communication without boundaries. Download [App Name] today and open up a world where language is no longer a barrier but a bridge to understanding.
+
+  # output:
+  
+![translator1](https://github.com/shuklamanan/translator/assets/102906369/45a82f72-b21f-422c-9de5-556d66affbe6)
+![translator audio](https://github.com/shuklamanan/translator/assets/102906369/aaecb197-5736-43ef-8426-141847b2021d)
+![translator audio2](https://github.com/shuklamanan/translator/assets/102906369/26b1c446-cf53-413d-b058-009a8671bd44)
