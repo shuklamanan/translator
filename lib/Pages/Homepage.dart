@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:speech_to_text/speech_to_text.dart';
 import 'package:translator/constants/constants.dart';
 import 'package:translator/service/service.dart';
 
@@ -17,8 +18,42 @@ class _HomePageState extends State<HomePage> {
   final _formkey = GlobalKey<FormState>();
   String dropdefaultvalue1 = "None";
   String dropdefaultvalue2 = "None";
+  String wordspoken = "";
   late Future<String> output;
   String temp = "";
+  bool speechenabled = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initspeech();
+  }
+
+  void initspeech() async {
+    await _speechtotext.initialize();
+    setState(() {});
+  }
+
+  void strtlistening() async {
+    await _speechtotext.listen(onResult: onspeechresult);
+    _translatestring.clear();
+    setState(() {});
+  }
+
+  void stoplistening() async {
+    wordspoken = "";
+    _translatestring.text += wordspoken;
+    await _speechtotext.stop();
+    setState(() {});
+  }
+
+  void onspeechresult(result) {
+    setState(() {
+      wordspoken = "${result.recognizedWords}";
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,14 +102,33 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.mic),
+                      onPressed: () {
+                        _speechtotext.isListening
+                            ? stoplistening()
+                            : strtlistening();
+                      },
+                      icon: (_speechtotext.isListening)
+                          ? const Icon(Icons.mic)
+                          : const Icon(Icons.mic_off),
                       iconSize: 40,
                     ),
                   ],
                 ),
                 const SizedBox(
-                  height: 70,
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        _speechtotext.isListening ? "Listening" : wordspoken,
+                        style: const TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 50,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -145,8 +199,9 @@ class _HomePageState extends State<HomePage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    if (_translatestring.text.trim() == '' ||
-                        !_formkey.currentState!.validate()) {
+                    if ((_translatestring.text.trim() == '' ||
+                            !_formkey.currentState!.validate()) &&
+                        wordspoken == "") {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           backgroundColor:
@@ -184,11 +239,6 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       );
-                    } else {
-                      output = translate(_translatestring.text,
-                          dropdefaultvalue1, dropdefaultvalue2);
-                      print("------------------------");
-                      print(output);
                     }
                   },
                   child: Container(
@@ -245,8 +295,12 @@ class _HomePageState extends State<HomePage> {
                           child: SingleChildScrollView(
                             scrollDirection: Axis.vertical,
                             child: FutureBuilder<String>(
-                              future: translate(_translatestring.text,
-                                  dropdefaultvalue1, dropdefaultvalue2),
+                              future: translate(
+                                  (_translatestring.text.isNotEmpty)
+                                      ? _translatestring.text
+                                      : wordspoken,
+                                  dropdefaultvalue1,
+                                  dropdefaultvalue2),
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
                                   temp = snapshot.data.toString();
@@ -265,7 +319,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     Positioned(
-                      left: 85,
+                      left: 145,
                       bottom: 5,
                       child: GestureDetector(
                         onTap: () {
@@ -285,31 +339,6 @@ class _HomePageState extends State<HomePage> {
                           ),
                           child: const Icon(
                             Icons.copy_outlined,
-                            color: Colors.black,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 205,
-                      bottom: 5,
-                      child: GestureDetector(
-                        onTap: () {
-                          print(temp);
-                          if (temp.trim().isNotEmpty) {
-                            Share.share('hi');
-                          }
-                        },
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            color: const Color.fromARGB(255, 13, 255, 0),
-                          ),
-                          child: const Icon(
-                            Icons.share,
                             color: Colors.black,
                             size: 30,
                           ),
