@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Center(
             child: Text(
-          'T R A N S L A T E',
+          'T R A N S L A T O R',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400),
         )),
       ),
@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> {
                     DropdownButton<String>(
                       value: dropdefaultvalue1,
                       elevation: 10,
-                      dropdownColor: const Color.fromARGB(255, 1, 175, 244),
+                      dropdownColor: Colors.grey,
                       borderRadius: BorderRadius.circular(10),
                       items: language
                           .map<DropdownMenuItem<String>>((String value) {
@@ -180,13 +180,15 @@ class _HomePageState extends State<HomePage> {
                     DropdownButton<String>(
                       value: dropdefaultvalue2,
                       elevation: 10,
-                      dropdownColor: const Color.fromARGB(255, 1, 175, 244),
+                      dropdownColor: Colors.grey,
                       borderRadius: BorderRadius.circular(10),
                       items: language
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(value),
+                          child: Text(
+                            value,
+                          ),
                         );
                       }).toList(),
                       onChanged: (String? value) {
@@ -248,11 +250,7 @@ class _HomePageState extends State<HomePage> {
                     height: 60,
                     width: 200,
                     decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.bottomRight,
-                          end: Alignment.topLeft,
-                          colors: gradientcolor,
-                        ),
+                        color: Colors.grey,
                         borderRadius: BorderRadius.circular(20)),
                     child: const Center(
                       child: Text(
@@ -275,11 +273,7 @@ class _HomePageState extends State<HomePage> {
                         width: 340,
                         height: 230,
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: gradientcolor,
-                          ),
+                          color: Colors.grey,
                           borderRadius: BorderRadius.circular(20),
                         ),
                       ),
@@ -337,7 +331,7 @@ class _HomePageState extends State<HomePage> {
                           height: 50,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(25),
-                            color: const Color.fromARGB(255, 13, 255, 0),
+                            color: Colors.grey,
                             // color: Color.fromARGB(255, 18, 248, 233),
                           ),
                           child: const Icon(
